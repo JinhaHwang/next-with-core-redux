@@ -7,11 +7,7 @@ import reducers from './reducers'
 let store
 
 function initStore(initialState) {
-  return createStore(
-    reducers,
-    initialState,
-    composeWithDevTools(applyMiddleware(thunkMiddleware))
-  )
+  return createStore(reducers, initialState, composeWithDevTools(applyMiddleware(thunkMiddleware)))
 }
 
 export const initializeStore = (preloadedState) => {
