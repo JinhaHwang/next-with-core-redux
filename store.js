@@ -6,12 +6,30 @@ import reducers from './reducers'
 
 let store
 
+const loggerMiddleware = (storeAPI) => (next) => (action) => {
+  console.log('dispatching', action)
+  let result = next(action)
+  console.log('result is action', result)
+  console.log('next state', storeAPI.getState())
+  return result
+}
+
+const actionLogMiddleware = (storeAPI) => (next) => (action) => {
+  console.log('action', action)
+  return next(action)
+}
+
 function initStore(initialState) {
-  return createStore(reducers, initialState, composeWithDevTools(applyMiddleware(thunkMiddleware)))
+  return createStore(
+    reducers,
+    initialState,
+    composeWithDevTools(applyMiddleware(loggerMiddleware, thunkMiddleware)),
+  )
 }
 
 export const initializeStore = (preloadedState) => {
   let _store = store ?? initStore(preloadedState)
+  console.log('스토어 생성')
 
   // After navigating to a page with an initial Redux state, merge that state
   // with the current state in the store, and create a new store
